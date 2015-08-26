@@ -1,0 +1,21 @@
+﻿Build started 26/08/2015 12:54:46.
+     1>Project "C:\Users\chaos_000\Documents\GitHub\Socket_1\BasicUseOfASocket\BasicUseOfASocket\BasicUseOfASocket.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source.cpp
+         Source.cpp
+     1>c:\users\chaos_000\documents\github\socket_1\basicuseofasocket\basicuseofasocket\source.cpp(15): error C3861: 'bzero': identifier not found
+     1>c:\users\chaos_000\documents\github\socket_1\basicuseofasocket\basicuseofasocket\source.cpp(19): error C2065: 'sockaddr_pi' : undeclared identifier
+     1>c:\users\chaos_000\documents\github\socket_1\basicuseofasocket\basicuseofasocket\source.cpp(19): error C2065: 'sockaddr_p' : undeclared identifier
+     1>c:\users\chaos_000\documents\github\socket_1\basicuseofasocket\basicuseofasocket\source.cpp(19): error C2070: 'unknown-type': illegal sizeof operand
+     1>c:\users\chaos_000\documents\github\socket_1\basicuseofasocket\basicuseofasocket\source.cpp(24): error C2065: 'byte_count' : undeclared identifier
+     1>c:\users\chaos_000\documents\github\socket_1\basicuseofasocket\basicuseofasocket\source.cpp(24): error C2065: 'buf' : undeclared identifier
+     1>c:\users\chaos_000\documents\github\socket_1\basicuseofasocket\basicuseofasocket\source.cpp(24): error C2065: 'len' : undeclared identifier
+     1>c:\users\chaos_000\documents\github\socket_1\basicuseofasocket\basicuseofasocket\source.cpp(26): error C2065: 'byte_count' : undeclared identifier
+     1>c:\users\chaos_000\documents\github\socket_1\basicuseofasocket\basicuseofasocket\source.cpp(26): error C2065: 'sockpi' : undeclared identifier
+     1>c:\users\chaos_000\documents\github\socket_1\basicuseofasocket\basicuseofasocket\source.cpp(26): error C2065: 'buf' : undeclared identifier
+     1>c:\users\chaos_000\documents\github\socket_1\basicuseofasocket\basicuseofasocket\source.cpp(26): error C2065: 'len' : undeclared identifier
+     1>Done Building Project "C:\Users\chaos_000\Documents\GitHub\Socket_1\BasicUseOfASocket\BasicUseOfASocket\BasicUseOfASocket.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:01.16
