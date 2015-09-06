@@ -1,6 +1,15 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
+#ifndef WINSOCK_VERSION
+#define WINSOCK_VERSION MAKEWORD(2,2)
+#endif
 #pragma comment(lib, "ws2_32.lib")
+#include <WS2tcpip.h>
+#include <windows.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <string.h>
 #include <winsock2.h>
 #include <iostream>
 #include <errno.h>
@@ -44,8 +53,6 @@ int main(int argc, char *argv[])
 
 	i = connect(sock, (struct sockaddr*) &sockaddr, sizeof(sockaddr));
 
-	//cout << i << "\n";
-
 	if (i == SOCKET_ERROR)
 	{
 		cout << "Connection Failed. FML." << "\n";
@@ -61,9 +68,18 @@ int main(int argc, char *argv[])
 	{
 		cout << "Please Wait. Establishing connection... \n";
 	}
-	count = recv(sock, buf, len, 0);
 	
-	cout << "Connection complete. \n" << "Press any key to continue.";
+	do
+	{
+		count = recv(sock, buf, sizeof(buf), 0);
+		if (count > 0)
+		{
+			buf[count] = 0;
+			cout << "Response: " << buf << "\n";
+		}
+	} while (count == (sizeof(buf)));
+
+	cout << "Connection complete. \n" << "Press any key to terminate.";
 	cin.get();
 
 	count = send(sock, buf, len, 0);
