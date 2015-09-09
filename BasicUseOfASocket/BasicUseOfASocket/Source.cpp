@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 	short len = 0;
 	//Indicates the size of the buffer
 	char buf[4096]; 
-	//THing needed for socket creation
+	//Thing needed for socket creation
 	struct sockaddr_in sockaddr;
 
 	//Not sure but seems vital
@@ -95,17 +95,6 @@ int main(int argc, char *argv[])
 	
 	//Expecting to reveive a value of 220
 	doTheDoThing(sock);
-	/*
-	do
-	{
-		count = recv(sock, buf, sizeof(buf), 0);
-		if (count > 0)
-		{
-			buf[count] = 0;
-			cout << "Response: " << buf << "\n";
-		}
-	} while (count == (sizeof(buf)));
-	*/
 
 	//To show that we are moving as we should be
 	cout << "Connection complete. \n";
@@ -118,16 +107,7 @@ int main(int argc, char *argv[])
 	cout << "Sent\n";
 
 	//Expecting to receive a value of 331
-	do
-	{
-		count = recv(sock, buf, sizeof(buf), 0);
-		buf[count] = 0;
-		if (count > 0)
-		{
-			buf[count] = 0;
-			cout << "Response: " << buf << "\n";
-		}
-	} while (count == (sizeof(buf)));
+	doTheDoThing(sock);
 
 	//Here we set our password, it doesn't really matter as long as it looks like an E-Mail address
 	sprintf(buf, "PASS nope@gmail.com\r\n");
@@ -135,15 +115,7 @@ int main(int argc, char *argv[])
 	count = send(sock, buf, strlen(buf), 0);
 
 	//Expecting to receive a value of 230
-	do
-	{
-		count = recv(sock, buf, sizeof(buf), 0);
-		if (count > 0)
-		{
-			buf[count] = 0;
-			cout << "Response: " << buf << "\n";
-		}
-	} while (count == (sizeof(buf)));
+	doTheDoThing(sock);
 
 	//Setting mode to passive
 	sprintf(buf, "PASV\r\n");
@@ -151,24 +123,9 @@ int main(int argc, char *argv[])
 	count = send(sock, buf, strlen(buf), 0);
 
 	//Expecting to receive a value of 230
-	do
-	{
-		count = recv(sock, buf, sizeof(buf), 0);
-		if (count > 0)
-		{
-			buf[count] = 0;
-			cout << "Response: " << buf << "\n";
-		}
-	} while (count == (sizeof(buf)));
+	doTheDoThing(sock);
 	//Here we get the vital port number
-	do {
-		count = recv(sock, buf, sizeof(buf), 0);
-		if (count > 0)
-		{
-			buf[count] = 0;
-			cout << "Response: " << buf << "\n";
-		}
-	} while (count == (sizeof(buf)));
+	doTheDoThing(sock);
 
 	//parse values from returned IP and port number
 	char * pch;
@@ -235,14 +192,7 @@ int main(int argc, char *argv[])
 	count = send(sock, buf, strlen(buf), 0);
 	cout << "Request sent \n";
 	//Expect a 150 from sock
-	do {
-		count = recv(sock, buf, sizeof(buf), 0);
-		if (count > 0)
-		{
-			buf[count] = 0;
-			cout << "Response: " << buf << "\n";
-		}
-	} while (count == (sizeof(buf)));
+	doTheDoThing(sock);
 
 	//Expect LIST from sock2
 	do {
@@ -258,14 +208,7 @@ int main(int argc, char *argv[])
 	closesocket(sock2);
 
 	//Expect 226
-	do {
-		count = recv(sock, buf, sizeof(buf), 0);
-		if (count > 0)
-		{
-			buf[count] = 0;
-			cout << "Response: " << buf << "\n";
-		}
-	} while (count == (sizeof(buf)));
+	doTheDoThing(sock);
 
 	//Do all of this again for RETR
 
@@ -296,15 +239,7 @@ int main(int argc, char *argv[])
 	count = send(sock, buf, strlen(buf), 0);
 
 	//Expecting to receive a value of 230
-	do
-	{
-		count = recv(sock, buf, sizeof(buf), 0);
-		if (count > 0)
-		{
-			buf[count] = 0;
-			cout << "Response: " << buf << "\n";
-		}
-	} while (count == (sizeof(buf)));
+	doTheDoThing(sock);
 
 	//parse values from returned IP and port number
 	pch = strtok(buf, ",()");
@@ -370,14 +305,7 @@ int main(int argc, char *argv[])
 	count = send(sock, buf, strlen(buf), 0);
 	cout << "Request sent \n";
 	//Expect a 150 from sock
-	do {
-		count = recv(sock, buf, sizeof(buf), 0);
-		if (count > 0)
-		{
-			buf[count] = 0;
-			cout << "Response: " << buf << "\n";
-		}
-	} while (count == (sizeof(buf)));
+	doTheDoThing(sock);
 
 	//Expect File from sock2
 	do {
@@ -393,27 +321,13 @@ int main(int argc, char *argv[])
 	closesocket(sock2);
 
 	//Expect 226
-	do {
-		count = recv(sock, buf, sizeof(buf), 0);
-		if (count > 0)
-		{
-			buf[count] = 0;
-			cout << "Response: " << buf << "\n";
-		}
-	} while (count == (sizeof(buf)));
+	doTheDoThing(sock);
 
 	sprintf(buf, "QUIT\r\n");
 	cout << "Closing connection \n";
 	count = send(sock, buf, strlen(buf), 0);
 	//Expect 221
-	do {
-		count = recv(sock, buf, sizeof(buf), 0);
-		if (count > 0)
-		{
-			buf[count] = 0;
-			cout << "Response: " << buf << "\n";
-		}
-	} while (count == (sizeof(buf)));
+	doTheDoThing(sock);
 
 	//Wait until user confirms before closing
 	cin.get();
@@ -423,7 +337,7 @@ int main(int argc, char *argv[])
 void doTheDoThing(int sock)
 {
 	short count;
-	char buf[1024];
+	char buf[2048];
 	do
 	{
 		count = recv(sock, buf, sizeof(buf), 0);
