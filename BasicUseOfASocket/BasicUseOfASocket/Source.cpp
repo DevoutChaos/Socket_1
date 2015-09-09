@@ -16,6 +16,8 @@
 WSADATA wsaData;
 using namespace std;
 
+void doTheDoThing(int sock);
+
 int main(int argc, char *argv[])
 {
 	//Initialisation
@@ -32,11 +34,14 @@ int main(int argc, char *argv[])
 	int x;
 	int y;
 	int port;
+	int x2;
+	int y2;
+	int port2;
 	//Used to send/receive data
 	short count;
 	short len = 0;
 	//Indicates the size of the buffer
-	char buf[2048]; 
+	char buf[4096]; 
 	//THing needed for socket creation
 	struct sockaddr_in sockaddr;
 
@@ -59,7 +64,7 @@ int main(int argc, char *argv[])
 	//Error handling
 	if (sock == INVALID_SOCKET)
 	{
-		printf("Failed, Invalid Socket. \n");
+		cout << "Failed, Invalid Socket. \n";
 		WSACleanup();
 		cout << "Socket is " << sock << "\n";
 		cout << "This is a problem";
@@ -89,6 +94,8 @@ int main(int argc, char *argv[])
 	}
 	
 	//Expecting to reveive a value of 220
+	doTheDoThing(sock);
+	/*
 	do
 	{
 		count = recv(sock, buf, sizeof(buf), 0);
@@ -98,6 +105,7 @@ int main(int argc, char *argv[])
 			cout << "Response: " << buf << "\n";
 		}
 	} while (count == (sizeof(buf)));
+	*/
 
 	//To show that we are moving as we should be
 	cout << "Connection complete. \n";
@@ -180,7 +188,7 @@ int main(int argc, char *argv[])
 	y = address[4];
 	port = x * 256 + y;
 	//output final port number
-	cout << "Port is: %d\n" << port;
+	cout << "Port is: " << port << "\n";
 
 	//Connect using the second socket
 	memset(&sockaddr, 0, sizeof(sockaddr));
@@ -192,7 +200,7 @@ int main(int argc, char *argv[])
 	//Error handling again, for sock2 this time
 	if (sock2 == INVALID_SOCKET)
 	{
-		printf("Failed, Invalid Socket. \n");
+		cout << "Failed, Invalid Socket. \n";
 		WSACleanup();
 		cout << "Socket is " << sock2 << "\n";
 		cout << "This is a problem";
@@ -259,6 +267,141 @@ int main(int argc, char *argv[])
 		}
 	} while (count == (sizeof(buf)));
 
+	//Do all of this again for RETR
+
+	//We don't need to re-parse the port
+	//Or redeclare the second socket
+	
+	//Checks for errors in f
+	if (f == SOCKET_ERROR)
+	{
+		cout << "Connection Failed. FML." << "\n";
+		cout << "Error: " << strerror(errno) << std::endl;
+		if (f == SOCKET_ERROR)
+		{
+			cout << "Fail to close!";
+		}
+		WSACleanup();
+		return 1;
+	}
+	//What we want to see (De ja vu?)
+	else
+	{
+		cout << "Please Wait. Establishing connection 2... \n";
+	}
+
+	//Setting mode to passive
+	sprintf(buf, "PASV\r\n");
+	cout << "Sending Passive \n";
+	count = send(sock, buf, strlen(buf), 0);
+
+	//Expecting to receive a value of 230
+	do
+	{
+		count = recv(sock, buf, sizeof(buf), 0);
+		if (count > 0)
+		{
+			buf[count] = 0;
+			cout << "Response: " << buf << "\n";
+		}
+	} while (count == (sizeof(buf)));
+
+	//parse values from returned IP and port number
+	pch = strtok(buf, ",()");
+	pch = strtok(NULL, ",()");
+	for (i = 0; i<6; i++)
+	{
+		address[i] = atoi(strtok(NULL, ",()"));
+
+	}
+	//output values given for port no.
+	cout << "\n" << address[3];
+	cout << "\n" << address[4];
+	///calculate port
+	//use x *256 + y for port
+	x2 = address[3];
+	y2 = address[4];
+	port2 = x2 * 256 + y2;
+	//output final port number
+	cout << "Port is: " << port2 << "\n";
+
+	//Connect using the second socket
+	memset(&sockaddr, 0, sizeof(sockaddr));
+	sock2 = socket(AF_INET, SOCK_STREAM, 0);
+	sockaddr.sin_family = AF_INET;
+	sockaddr.sin_port = htons(port2); // Host to network short
+	sockaddr.sin_addr.s_addr = inet_addr("130.179.16.34"); // IP
+
+	//Error handling again, for sock2 this time
+	if (sock2 == INVALID_SOCKET)
+	{
+		cout << "Failed, Invalid Socket. \n";
+		WSACleanup();
+		cout << "Socket is " << sock2 << "\n";
+		cout << "This is a problem";
+		cin.get();
+		return 1;
+	}
+
+	//Set sock2 to be f
+	f = connect(sock2, (struct sockaddr*) &sockaddr, sizeof(sockaddr));
+
+	//Checks for errors in f
+	if (f == SOCKET_ERROR)
+	{
+		cout << "Connection Failed. FML." << "\n";
+		cout << "Error: " << strerror(errno) << std::endl;
+		if (f == SOCKET_ERROR)
+		{
+			cout << "Fail to close!";
+		}
+		WSACleanup();
+		return 1;
+	}
+	//What we want to see (De ja vu?)
+	else
+	{
+		cout << "Please Wait. Establishing connection 2... \n";
+	}
+
+	//Call retr using the first socket
+	cout << "Requesting file \n";
+	sprintf(buf, "RETR NOTICE\r\n");
+	count = send(sock, buf, strlen(buf), 0);
+	cout << "Request sent \n";
+	//Expect a 150 from sock
+	do {
+		count = recv(sock, buf, sizeof(buf), 0);
+		if (count > 0)
+		{
+			buf[count] = 0;
+			cout << "Response: " << buf << "\n";
+		}
+	} while (count == (sizeof(buf)));
+
+	//Expect File from sock2
+	do {
+		count = recv(sock2, buf, sizeof(buf), 0);
+		if (count > 0)
+		{
+			buf[count] = 0;
+			cout << "Response: " << buf << "\n";
+		}
+	} while (count == (sizeof(buf)));
+
+	//Close scoket No.2
+	closesocket(sock2);
+
+	//Expect 226
+	do {
+		count = recv(sock, buf, sizeof(buf), 0);
+		if (count > 0)
+		{
+			buf[count] = 0;
+			cout << "Response: " << buf << "\n";
+		}
+	} while (count == (sizeof(buf)));
+
 	sprintf(buf, "QUIT\r\n");
 	cout << "Closing connection \n";
 	count = send(sock, buf, strlen(buf), 0);
@@ -275,4 +418,19 @@ int main(int argc, char *argv[])
 	//Wait until user confirms before closing
 	cin.get();
 	return 0;
+}
+
+void doTheDoThing(int sock)
+{
+	short count;
+	char buf[1024];
+	do
+	{
+		count = recv(sock, buf, sizeof(buf), 0);
+		if (count > 0)
+		{
+			buf[count] = 0;
+			cout << "Response: " << buf << "\n";
+		}
+	} while (count == (sizeof(buf)));
 }
