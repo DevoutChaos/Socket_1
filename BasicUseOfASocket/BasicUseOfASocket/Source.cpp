@@ -212,9 +212,6 @@ int main(int argc, char *argv[])
 
 	//Do all of this again for RETR
 
-	//We don't need to re-parse the port
-	//Or redeclare the second socket
-	
 	//Checks for errors in f
 	if (f == SOCKET_ERROR)
 	{

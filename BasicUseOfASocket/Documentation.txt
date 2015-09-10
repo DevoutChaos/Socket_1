@@ -1,0 +1,23 @@
+You can read all of the defines and includes for yourself within the source file.
+
+This file uses 2 functions, 'main' and 'doTheDoThing'
+
+doTheDoThing is called inside main, and is used as it contains a loop which is used
+many times throughout the code. It takes int sock as an argument, declaring count and buf[2048] 
+inside it. count what we use for sending and receiving data, and buf (buffer) is the
+actual readable information.
+The loop goes through anything which has been received and outputs it using cout.
+
+Inside main, the declarations can be seen within the source code, under headings which
+show what they will be used for.
+We then procede to set-up our first socket with error handling. We follow the diagram
+given in the assignment so that we know what we need to send the server and in what order.
+After we have declared PASV (passive) for the first time, we read from the server twice,
+confirming we entered passiv, and getting the port number.
+We parse this port number and convert it into a usable form, creating a second socket
+using this new port. This done, we request the list, listening with socket 2.
+We then close the second socket, and go back to passive and do it all again (from passive)
+except retrieving a file instead of listing all of them.
+Once we have the file, we close the second socket, and then QUIT.
+At he end there is a cin.get() which waits for user input, just to make sure that the
+screen doesn't disappear before we can check it has completed successfully.
