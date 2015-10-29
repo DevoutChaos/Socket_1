@@ -134,7 +134,6 @@ int main(int argc, char *argv[])
 	for (i = 0; i<6; i++)
 	{
 		address[i] = atoi(strtok(NULL, ",()"));
-
 	}
 	//output values given for port no.
 	printf("%d\n", address[3]);
